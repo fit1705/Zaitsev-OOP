@@ -1,0 +1,9 @@
+﻿  Calculator.cpp
+  Context.cpp
+c:\users\acer\source\repos\project3calc\project3calc\context.cpp(14): warning C4018: <: несоответствие типов со знаком и без знака
+c:\users\acer\source\repos\project3calc\project3calc\context.cpp(23): warning C4018: <: несоответствие типов со знаком и без знака
+  Factory.cpp
+  Operator.cpp
+  Создание кода...
+Operator.obj : error LNK2019: ссылка на неразрешенный внешний символ "public: virtual __thiscall Operator::~Operator(void)" (??1Operator@@UAE@XZ) в функции "public: virtual __thiscall Add::~Add(void)" (??1Add@@UAE@XZ)
+C:\Users\acer\source\repos\Project3calc\Debug\Project3calc.exe : fatal error LNK1120: неразрешенных внешних элементов: 1
