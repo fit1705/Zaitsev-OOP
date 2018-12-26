@@ -9,9 +9,9 @@
 #include <iostream>
 #include <float.h>
 class Context{
-	std::stack <double> arg_stack; //стек значений
+	std::stack <double> arg_stack; //СЃС‚РµРє Р·РЅР°С‡РµРЅРёР№
 	std::map <std::string, double> variables; //define map
-	std::list <std::string> args; //лист аргументов
+	std::list <std::string> args; //Р»РёСЃС‚ Р°СЂРіСѓРјРµРЅС‚РѕРІ
 	int stack_size = 0;
 public:
 	
