@@ -9,7 +9,7 @@
 #include <stack>
 
 void Context::get_arg(std::string &buffer) {
-	//добавляем аргементы в лист
+	//РґРѕР±Р°РІР»СЏРµРј Р°СЂРіРµРјРµРЅС‚С‹ РІ Р»РёСЃС‚
 	int j = 0;
 	for (int i = 0; i < buffer.length(); i++)
 	{
@@ -24,25 +24,25 @@ void Context::get_arg(std::string &buffer) {
 		args.push_back(buffer.substr(j, buffer.length() - j));
 }
 
-//получение первого элемента листа
+//РїРѕР»СѓС‡РµРЅРёРµ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° Р»РёСЃС‚Р°
 std::string Context::front_() {
 
 	return args.front();
 }
 
-//получение последнего элемента листа
+//РїРѕР»СѓС‡РµРЅРёРµ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р° Р»РёСЃС‚Р°
 std::string& Context::back_()
 {
 	return args.back();
 }
 
-//удаление первого элемента листа
+//СѓРґР°Р»РµРЅРёРµ РїРµСЂРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° Р»РёСЃС‚Р°
 void Context::pop_front_() {
 
 	args.pop_front();
 }
 
-//удаление последнего элемента листа
+//СѓРґР°Р»РµРЅРёРµ РїРѕСЃР»РµРґРЅРµРіРѕ СЌР»РµРјРµРЅС‚Р° Р»РёСЃС‚Р°
 void Context::pop_back_() {
 
 	args.pop_back();
@@ -54,14 +54,14 @@ int Context::size_() {
 	return args.size();
 }
 
-//добавление в стек значений
+//РґРѕР±Р°РІР»РµРЅРёРµ РІ СЃС‚РµРє Р·РЅР°С‡РµРЅРёР№
 void Context::push_arg(double arg) {
 
 	arg_stack.push(arg);
 	stack_size++;
 }
 
-//удаление из стека значений 
+//СѓРґР°Р»РµРЅРёРµ РёР· СЃС‚РµРєР° Р·РЅР°С‡РµРЅРёР№ 
 void Context::pop_arg() {
 	if (!size_arg())
 		throw empty_stack();
@@ -70,13 +70,13 @@ void Context::pop_arg() {
 	stack_size--;
 }
 
-//возвращение размера стека
+//РІРѕР·РІСЂР°С‰РµРЅРёРµ СЂР°Р·РјРµСЂР° СЃС‚РµРєР°
 int Context::size_arg() {
 
 	return stack_size;
 }
 
-//возвращение верхнего элемента стека
+//РІРѕР·РІСЂР°С‰РµРЅРёРµ РІРµСЂС…РЅРµРіРѕ СЌР»РµРјРµРЅС‚Р° СЃС‚РµРєР°
 double Context::top_arg() {
 	if (!size_arg())
 		throw empty_stack();
@@ -84,14 +84,14 @@ double Context::top_arg() {
 }
 
 
-//проверка количества элементов в мапе
+//РїСЂРѕРІРµСЂРєР° РєРѕР»РёС‡РµСЃС‚РІР° СЌР»РµРјРµРЅС‚РѕРІ РІ РјР°РїРµ
 bool Context::is_empty_var()
 {
 	return variables.empty();
 }
 
 
-//поиск в map
+//РїРѕРёСЃРє РІ map
 double Context::find_var(std::string& name)
 {
 	if (!variables.size())
@@ -101,7 +101,7 @@ double Context::find_var(std::string& name)
 	return DBL_MIN;
 }
 
-//добавление в map
+//РґРѕР±Р°РІР»РµРЅРёРµ РІ map
 void Context::add_var(std::string name, double value) {
 
 	variables[name] = value;
