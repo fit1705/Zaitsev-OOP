@@ -32,7 +32,7 @@ namespace {
 	bool fake = add_commands();
 }
 
-//ôóíêöèÿ ïðîâåðêè ÷èñëà íà íàëè÷èå ëèøíèõ ñèìâîëîâ
+//Ñ„ÑƒÐ½ÐºÑ†Ð¸Ñ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ Ñ‡Ð¸ÑÐ»Ð° Ð½Ð° Ð½Ð°Ð»Ð¸Ñ‡Ð¸Ðµ Ð»Ð¸ÑˆÐ½Ð¸Ñ… ÑÐ¸Ð¼Ð²Ð¾Ð»Ð¾Ð²
 bool check(std::string buffer){
 	int i = 0;
 	while (buffer[i] >= 48 && buffer[i] <= 57 || buffer[i] == '.')
@@ -45,11 +45,11 @@ bool check(std::string buffer){
 void Push::make_operation(Context& context){
 
 	double arg = DBL_MIN;
-	//åñëè åñòü define
+	//ÐµÑÐ»Ð¸ ÐµÑÑ‚ÑŒ define
 	if (!context.is_empty_var())
 		arg = context.find_var(context.back_());
 	if (arg == DBL_MIN){
-		//åñëè â ÷èñëå õðàíÿòñÿ ïîñòîðîííèå ñèìâîëû
+		//ÐµÑÐ»Ð¸ Ð² Ñ‡Ð¸ÑÐ»Ðµ Ñ…Ñ€Ð°Ð½ÑÑ‚ÑÑ Ð¿Ð¾ÑÑ‚Ð¾Ñ€Ð¾Ð½Ð½Ð¸Ðµ ÑÐ¸Ð¼Ð²Ð¾Ð»Ñ‹
 		if (!check(context.back_()))
 			throw invalid_arg();
 
@@ -60,21 +60,21 @@ void Push::make_operation(Context& context){
 }
 
 void Pop::make_operation(Context& context){
-	//åñëè ïóñòîé ñòåê
+	//ÐµÑÐ»Ð¸ Ð¿ÑƒÑÑ‚Ð¾Ð¹ ÑÑ‚ÐµÐº
 	if (context.size_arg() <= 0)
 		throw empty_stack();
 	context.pop_arg();
 }
 
 void Print::make_operation(Context& context){
-	//åñëè ïóñòîé ñòåê
+	//ÐµÑÐ»Ð¸ Ð¿ÑƒÑÑ‚Ð¾Ð¹ ÑÑ‚ÐµÐº
 	if (!context.size_arg())
 		throw empty_stack();
 	std::cout << context.top_arg();
 }
 
 void Define::make_operation(Context& context){
-	//åñëè íå÷åãî çàìåíÿòü
+	//ÐµÑÐ»Ð¸ Ð½ÐµÑ‡ÐµÐ³Ð¾ Ð·Ð°Ð¼ÐµÐ½ÑÑ‚ÑŒ
 	if (!context.size_())
 		throw empty_args();
 	std::string variable = context.back_();
@@ -87,16 +87,16 @@ void Define::make_operation(Context& context){
 
 void Add::make_operation(Context& context){
 	double arg[2];
-	//åñëè íå õâàòàåò àðãóìåíòîâ äëÿ îïåðàöèè
+	//ÐµÑÐ»Ð¸ Ð½Ðµ Ñ…Ð²Ð°Ñ‚Ð°ÐµÑ‚ Ð°Ñ€Ð³ÑƒÐ¼ÐµÐ½Ñ‚Ð¾Ð² Ð´Ð»Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸
 	if (context.size_() + context.size_arg() < 2)
 		throw empty_args();
 	int counter = 0;
 	while (counter != 2 && context.size_()){
-		//ïîèñê define
+		//Ð¿Ð¾Ð¸ÑÐº define
 		arg[counter] = context.find_var(context.back_());
-		//åñëè íå íàøåë
+		//ÐµÑÐ»Ð¸ Ð½Ðµ Ð½Ð°ÑˆÐµÐ»
 		if (arg[counter] == DBL_MIN){
-			//ïðîâåðêà ÷èñëà
+			//Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ñ‡Ð¸ÑÐ»Ð°
 			if (!check(context.back_()))
 				throw invalid_arg();
 			arg[counter] = std::stod(context.back_());
