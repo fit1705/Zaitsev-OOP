@@ -24,18 +24,17 @@ void Calculator::complete(std::ifstream &in, std::ofstream &out) {
 
 		
 		//первый элемент строки	
-		if (operation.front() != '#') {
-			try {
-
-				std::auto_ptr<Operator> some_oper(Factory::get_instance()->get_operator(operation));
-				some_oper->make_operation(context);
-			}
-			catch (calc_except& exc)
-			{
-				out << exc.what() << "\n";
-			}
-			
+		try 
+		{
+			std::auto_ptr<Operator> some_oper(Factory::get_instance()->get_operator(operation));
+			some_oper->make_operation(context);
 		}
+		catch (calc_except& exc)
+		{
+			out << exc.what() << "\n";
+		}
+			
+		
 
 	}
 		
