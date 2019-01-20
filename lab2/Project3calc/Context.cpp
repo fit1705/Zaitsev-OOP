@@ -21,26 +21,35 @@ void Context::get_arg(std::string &buffer) {
 			if (buffer[i + 1] == '\0')
 				i++;
 			comand = buffer.substr(j, i - j);
-			args.push_back(comand);
 			j = i + 1;
 
 		}
-		if (comand=="PUSH" || comand=="POP" || comand=="PRINT" || comand=="SQRT")
+		if ( comand=="POP" || comand=="PRINT" || comand=="SQRT")
 			args.push_back(comand);
-		if (comand=="+" || comand =="-" || comand == "*" || comand == "/")
+		if (comand=="PUSH" ||comand=="+" || comand =="-" || comand == "*" || comand == "/")
 		{
-			args.push_back(comand);
+			if(comand!="PUSH")
+				args.push_back(comand);
 			i++;
-			comand ="";
+			double Number = 0;
 			while (buffer[i] != ' ' || buffer [i+1] != '\0')
 			{
 				if (buffer[i + 1] == '\0')
 					i++;
-				comand = buffer.substr(j, i - j);	//пушим число
-				args.push_back(comand);
+				if (!context.is_empty_var())		//поиск define
+					Number = context.find_var(buffer.substr(j, i - j));
+				if (Number == DBL_MIN)
+				{
+					//если в числе хранятся постронние символы
+					if (!check(buffer.substr(j, i - j)))
+						throw invalid_arg();	
+					Number = std::stod(buffer.substr(j, i - j));
+					
+				}
+				push_arg(Number);	//пушим число
 				j = i + 1;
 			}
-			if (comand =="")
+			if ( Number == 0)
 				throw empty_args();
 		}
 		if (comand == "DEFINE")
@@ -71,6 +80,7 @@ void Context::get_arg(std::string &buffer) {
 					context.add_var(comand, std::stod(What_Define));
 			}
 		}
+		comand ="";
 
 	}
 	
@@ -117,9 +127,7 @@ void Context::push_arg(double arg) {
 void Context::pop_arg() {
 	if (!size_arg())
 		throw empty_stack();
-	double arg = arg_stack.top();
 	arg_stack.pop();
-	stack_size--;
 }
 
 //возвращение размера стека
@@ -157,4 +165,14 @@ double Context::find_var(std::string& name)
 void Context::add_var(std::string name, double value) {
 
 	variables[name] = value;
+}
+
+//функция проверки числа на наличие лишних символов
+bool check(std::string buffer){
+	int i = 0;
+	while (buffer[i] >= 48 && buffer[i] <= 57 || buffer[i] == '.')
+		i++;
+	if (i == buffer.length() - 1)
+		return 1;
+	return 0;
 }
