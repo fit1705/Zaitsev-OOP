@@ -14,19 +14,21 @@ class Context{
 	std::list <std::string> args; //лист аргументов
 	int stack_size = 0;
 public:
-	
-	void get_arg(std::string&);
-	void pop_front_();	
-	void pop_back_();
+	//работа с листом аргументов
 	std::string front_();
 	std::string& back_();
-	bool is_empty_var();
-	int size_arg();
-	double find_var(std::string&);
-	double top_arg();
+	void pop_front_();	
+	void pop_back_();
+	int size_();
+	//работа со стеком значений
 	void push_arg(double);
 	void pop_arg();
-	int size_();
+	int size_arg();
+	double top_arg();
+	int size_arg();
+	//работа с map
+	bool is_empty_var();
+	double find_var(std::string&);	
 	void add_var(std::string, double);
 };
 
