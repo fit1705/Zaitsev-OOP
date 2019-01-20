@@ -20,12 +20,8 @@ namespace {
 		Factory::get_instance()->make_command("SQRT", sqrt);
 		PopCreator* pop = new PopCreator;
 		Factory::get_instance()->make_command("POP", pop);
-		PushCreator* push = new PushCreator;
-		Factory::get_instance()->make_command("PUSH", push);
 		PrintCreator* print = new PrintCreator;
 		Factory::get_instance()->make_command("PRINT", print);
-		DefineCreator* define = new DefineCreator;
-		Factory::get_instance()->make_command("DEFINE", define);
 		return 1;
 	}
 
@@ -33,32 +29,6 @@ namespace {
 }
 
 //функция проверки числа на наличие лишних символов
-bool check(std::string buffer){
-	int i = 0;
-	while (buffer[i] >= 48 && buffer[i] <= 57 || buffer[i] == '.')
-		i++;
-	if (i == buffer.length() - 1)
-		return 1;
-	return 0;
-}
-
-void Push::make_operation(Context& context){
-
-	double arg = DBL_MIN;
-	//если есть define
-	if (!context.is_empty_var())
-		arg = context.find_var(context.back_());
-	if (arg == DBL_MIN){
-		//если в числе хранятся посторонние символы
-		if (!check(context.back_()))
-			throw invalid_arg();
-
-		arg = std::stod(context.back_());
-	}
-	context.pop_back_();
-	context.push_arg(arg);
-}
-
 void Pop::make_operation(Context& context){
 	//если пустой стек
 	if (context.size_arg() <= 0)
@@ -73,140 +43,63 @@ void Print::make_operation(Context& context){
 	std::cout << context.top_arg();
 }
 
-void Define::make_operation(Context& context){
-	//если нечего заменять
-	if (!context.size_())
-		throw empty_args();
-	std::string variable = context.back_();
-	context.pop_back_();
-	std::string name = context.back_();
-	if (!check(context.back_()))
-		throw invalid_arg();
-	context.add_var(name, std::stod(variable));
-}
 
 void Add::make_operation(Context& context){
-	double arg[2];
 	//если не хватает аргументов для операции
-	if (context.size_() + context.size_arg() < 2)
+	if (context.size_() < 1 || context.size_arg() < 2)
 		throw empty_args();
-	int counter = 0;
-	while (counter != 2 && context.size_()){
-		//поиск define
-		arg[counter] = context.find_var(context.back_());
-		//если не нашел
-		if (arg[counter] == DBL_MIN){
-			//проверка числа
-			if (!check(context.back_()))
-				throw invalid_arg();
-			arg[counter] = std::stod(context.back_());
-		}
-		context.pop_back_();
-		counter++;
-	}
-	while (counter != 2)
-	{
-		arg[counter] = context.top_arg();
-		context.pop_back_();
-		counter++;
-	}
-	context.push_arg(arg[0] + arg[1]);
+	double Number = context.top_arg;
+	context.pop_arg;
+	context.pop_back_();
+	context.push_arg(Number +context.top_arg);
+	context.pop_arg;
 }
 
 
 void Subtract::make_operation(Context& context) {
-	double arg[2];
-	if (context.size_() + context.size_arg() < 2)
+	
+	//если не хватает аргументов для операции
+	if (context.size_() < 1 || context.size_arg() < 2)
 		throw empty_args();
-	int counter = 0;
-	while (counter != 2 && context.size_()) {
-		arg[counter] = context.find_var(context.back_());
-		if (arg[counter] == DBL_MIN) {
-			if (!check(context.back_()))
-				throw invalid_arg();
-			arg[counter] = std::stod(context.back_());
-		}
-		context.pop_back_();
-		counter++;
-	}
-	while (counter != 2) {
-		arg[counter] = context.top_arg();
-		context.pop_back_();
-		counter++;
-	}
-	context.push_arg(arg[1] - arg[0]);
+	double Number = context.top_arg;
+	context.pop_arg;
+	context.pop_back_();
+	context.push_arg(context.top_arg - Number);
+	context.pop_arg;
 }
 
 
 void Multiplicate::make_operation(Context& context) {
-	double arg[2];
-	if (context.size_() + context.size_arg() < 2)
+	if (context.size_() < 1 || context.size_arg() < 2)
 		throw empty_args();
-	int counter = 0;
-	while (counter != 2 && context.size_()) {
-		arg[counter] = context.find_var(context.back_());
-		if (arg[counter] == DBL_MIN) {
-			if (!check(context.back_()))
-				throw invalid_arg();
-			arg[counter] = std::stod(context.back_());
-		}
-		context.pop_back_();
-		counter++;
-	}
-	while (counter != 2) {
-		arg[counter] = context.top_arg();
-		context.pop_back_();
-		counter++;
-	}
-	context.push_arg(arg[0] * arg[1]);
+	double Number = context.top_arg;
+	context.pop_arg;
+	context.pop_back_();
+	context.push_arg(context.top_arg * Number);
+	context.pop_arg;
 }
 
 
 void Division::make_operation(Context& context) {
-	double arg[2];
-	if (context.size_() + context.size_arg() < 2)
+	if (context.size_() < 1 || context.size_arg() < 2)
 		throw empty_args();
-	int counter = 0;
-	while (counter != 2 && context.size_()) {
-		arg[counter] = context.find_var(context.back_());
-		if (arg[counter] == DBL_MIN) {
-			if (!check(context.back_()))
-				throw invalid_arg();
-			arg[counter] = std::stod(context.back_());
-		}
-		context.pop_back_();
-		counter++;
-	}
-	while (counter != 2) {
-		arg[counter] = context.top_arg();
-		context.pop_back_();
-		counter++;
-	}
-	if (!arg[0])
-		throw division_by_zero();
-	context.push_arg(arg[1] / arg[0]);
+	double Number = context.top_arg;
+	context.pop_arg;
+	if (!Number)
+		throw division_by_zero;
+	context.pop_back_();
+	context.push_arg(context.top_arg \ Number);
+	context.pop_arg;
 }
 
 void Sqrt::make_operation(Context& context) {
-	double arg;
-	if (context.size_() + context.size_arg() < 1)
+	if (context.size_() < 1 || context.size_arg() < 1)
 		throw empty_args();
-	int counter = 0;
-	if (context.size_()) {
-		arg = context.find_var(context.back_());
-		if (arg == DBL_MIN) {
-			if (!check(context.back_()))
-				throw invalid_arg();
-			arg = std::stod(context.back_());
-		}
-		context.pop_back_();
-	}
-	else {
-		arg = context.top_arg();
-		context.pop_back_();
-		counter++;
-	}
-	if (arg < 0)
+	double Number = context.top_arg;
+	context.pop_arg;
+	if (Number < 0)
 		throw negative_number();
+	context.pop_back_();
 	context.push_arg(sqrt(arg));
+	
 }
