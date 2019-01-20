@@ -7,21 +7,73 @@
 #include "Basic.h"
 #include "Exceptions.h"
 #include <stack>
+#include <string>
 
+using std::string;
 void Context::get_arg(std::string &buffer) {
 	//добавляем аргементы в лист
 	int j = 0;
+	string comand = "";
 	for (int i = 0; i < buffer.length(); i++)
 	{
-		if (buffer[i] == ' ')
+		if (buffer[i] == ' ' || buffer[i + 1] == '\0')
 		{
-			args.push_back(buffer.substr(j, i - j));
+			if (buffer[i + 1] == '\0')
+				i++;
+			comand = buffer.substr(j, i - j);
+			args.push_back(comand);
 			j = i + 1;
+
+		}
+		if (comand=="PUSH" || comand=="POP" || comand=="PRINT" || comand=="SQRT")
+			args.push_back(comand);
+		if (comand=="+" || comand =="-" || comand == "*" || comand == "/")
+		{
+			args.push_back(comand);
+			i++;
+			comand ="";
+			while (buffer[i] != ' ' || buffer [i+1] != '\0')
+			{
+				if (buffer[i + 1] == '\0')
+					i++;
+				comand = buffer.substr(j, i - j);	//пушим число
+				args.push_back(comand);
+				j = i + 1;
+			}
+			if (comand =="")
+				throw empty_args();
+		}
+		if (comand == "DEFINE")
+		{
+			string What_Define ="";
+			i++;
+			while (buffer[i] != ' ' || buffer [i+1] != '\0')
+			{
+				if (buffer[i + 1] == '\0')
+					throw empty_args();
+				comand = buffer.substr(j, i - j);	//нашли что заменять
+				j = i + 1;
+			}
+			if (comand =="")
+				throw empty_args();
+			else{
+				i++;
+				while (buffer[i] != ' ' || buffer [i+1] != '\0')
+				{
+					if (buffer[i + 1] == '\0')
+						i++;
+					What_Define = buffer.substr(j, i - j);	//нашли на что заменять
+					j = i + 1;
+				}
+				if (What_Define =="")
+					throw empty_args();
+				else 
+					context.add_var(comand, std::stod(What_Define));
+			}
 		}
 
 	}
-	if (j < buffer.length())
-		args.push_back(buffer.substr(j, buffer.length() - j));
+	
 }
 
 //получение первого элемента листа
